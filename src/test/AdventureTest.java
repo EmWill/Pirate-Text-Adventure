@@ -1,0 +1,47 @@
+package test;
+import model.Adventure;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.IOException;
+import java.util.Scanner;
+
+public class AdventureTest {
+    private Adventure testAdventure;
+    Scanner scanner = new Scanner(System.in);
+
+    @BeforeEach
+    public void initialize() throws IOException {
+        testAdventure = new Adventure();
+    }
+
+    @Test
+    public void updateRoomTestQuarterpass(){
+        testAdventure.player.pirateX = 0;
+        testAdventure.player.pirateY = 0;
+        testAdventure.updateRoom();
+        assertEquals(testAdventure.current, testAdventure.quarters);
+    }
+
+    @Test
+    public void updateRoomTestQuarterfailY(){
+        testAdventure.player.pirateX = 0;
+        testAdventure.player.pirateY = 1;
+        testAdventure.updateRoom();
+        assertFalse(testAdventure.current == testAdventure.quarters);
+    }
+
+    @Test
+    public void updateRoomTestQuarterfailX(){
+        testAdventure.player.pirateX = 1;
+        testAdventure.player.pirateY = 0;
+        testAdventure.updateRoom();
+        assertFalse(testAdventure.current == testAdventure.quarters);
+    }
+
+
+}
