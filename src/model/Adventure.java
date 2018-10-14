@@ -17,7 +17,11 @@ public class Adventure {
     public Room quarters;
     public Room longhall;
     public ArrayList<Room> map;
-    List<String> lines = Files.readAllLines(Paths.get("save1.txt"));
+    List<String> file1 = Files.readAllLines(Paths.get("save1.txt"));
+    List<String> file2 = Files.readAllLines(Paths.get("save2.txt"));
+    List<String> file3 = Files.readAllLines(Paths.get("save3.txt"));
+
+
 
 
 
@@ -149,12 +153,37 @@ public class Adventure {
     // EFFECTS: save's player's coordinates, to be reloaded when they restart the game.
     // MODIFIES: save1.txt
     private void save() throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter writer = new PrintWriter("save1.txt", "UTF-8");
-        writer.println(Integer.toString(player.pirateX));
-        writer.println(Integer.toString(player.pirateY));
-        writer.close();
-        System.out.println("Yer game be saved!");
-        while(!choose());
+        System.out.println("Please select a file:");
+        System.out.println("File 1: " + file1.get(0));
+        System.out.println("File 2: " + file2.get(0));
+        System.out.println("File 3: " + file3.get(0));
+        String choice = scanner.nextLine();
+        if (choice.equals("1") || choice.equals(file1.get(0)) || choice.equals("File 1") || choice.equals("file 1")) {
+            PrintWriter writer = new PrintWriter("save1.txt", "UTF-8");
+            writer.println(player.getPirateName());
+            writer.println(Integer.toString(player.pirateX));
+            writer.println(Integer.toString(player.pirateY));
+            writer.close();
+            System.out.println("Yer game be saved!");
+        }
+        else if (choice.equals("2") || choice.equals(file2.get(0)) || choice.equals("File 2") || choice.equals("file 2")) {
+            PrintWriter writer = new PrintWriter("save2.txt", "UTF-8");
+            writer.println(player.getPirateName());
+            writer.println(Integer.toString(player.pirateX));
+            writer.println(Integer.toString(player.pirateY));
+            writer.close();
+            System.out.println("Yer game be saved!");
+        }
+        else if (choice.equals("3") || choice.equals(file3.get(0)) || choice.equals("File 3") || choice.equals("file 3")) {
+            PrintWriter writer = new PrintWriter("save3.txt", "UTF-8");
+            writer.println(player.getPirateName());
+            writer.println(Integer.toString(player.pirateX));
+            writer.println(Integer.toString(player.pirateY));
+            writer.close();
+            System.out.println("Yer game be saved!");
+        }
+        else {System.out.println("Changed yer mind? Or did ye spell something wrong?"); }
+        while (!choose());
 
     }
 
@@ -216,7 +245,7 @@ public class Adventure {
     private void get() throws FileNotFoundException, UnsupportedEncodingException {
         if (current.stuff.size() > 0) {
             int i = 0;
-            System.out.println("What do ye want to get? (select number, or type any letter to cancel!)");
+            System.out.println("What do ye want to get? Select a number (if ye want to cancel, just type any letter!).");
             for (Object o:current.stuff
                  ) {
                 i++;
