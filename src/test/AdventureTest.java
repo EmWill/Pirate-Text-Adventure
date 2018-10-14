@@ -1,5 +1,7 @@
 package test;
+import exceptions.EmptyRoomException;
 import model.Adventure;
+import model.Sword;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +44,30 @@ public class AdventureTest {
         testAdventure.updateRoom();
         assertFalse(testAdventure.current == testAdventure.quarters);
     }
+
+  @Test
+    public void emptyRoomTestEmpty(){
+        int i = 1;
+      try {
+          testAdventure.emptyRoom(testAdventure.current.stuff);
+      } catch (EmptyRoomException e) {
+          i = 2;
+      }
+      assertEquals(i, 2);
+  }
+
+    @Test
+    public void emptyRoomTestNotEmpty(){
+        int i = 1;
+        testAdventure.current.stuff.add(new Sword(" ", 0,  " ", " "));
+        try {
+            testAdventure.emptyRoom(testAdventure.current.stuff);
+        } catch (EmptyRoomException e) {
+            i = 2;
+        }
+        assertEquals(i, 1);
+    }
+
 
 
 }

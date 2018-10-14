@@ -1,4 +1,6 @@
 package model;
+import exceptions.EmptyRoomException;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -150,8 +152,8 @@ public class Adventure {
         }
     }
 
-    // EFFECTS: save's player's coordinates, to be reloaded when they restart the game.
-    // MODIFIES: save1.txt
+    // EFFECTS: saves player's progress on whichever file they choose.
+    // MODIFIES: save1.txt, save2.txt, save3.txt
     private void save() throws FileNotFoundException, UnsupportedEncodingException {
         System.out.println("Please select a file:");
         System.out.println("File 1: " + file1.get(0));
@@ -204,7 +206,14 @@ public class Adventure {
         else if (choice.equals("weapon")){player.getEquipment(); while (!choose());}
         else if (choice.equals("equip")){equipSelect();}
         else if (choice.equals("ammo")){System.out.println(player.checkAmmo(player.currentWeapon)); while (!choose());}
-        else if (choice.equals("get")){get(); while (!choose());}
+        else if (choice.equals("get")){
+            try {
+                get();
+            } catch (EmptyRoomException e) {
+                System.out.println("There's nary a thing to be gotten!");
+
+            }
+        finally {while (!choose());}}
         else {System.out.println("I don't know that guy... Did you spell something wrong?");
             return false;}
         return true;
@@ -242,8 +251,10 @@ public class Adventure {
         while(!choose());}
     }
 
-    private void get() throws FileNotFoundException, UnsupportedEncodingException {
-        if (current.stuff.size() > 0) {
+    //EFFECTS: lets players choose from a list of available items to obtain
+    //MODIFIES: player, current room.
+    private void get() throws FileNotFoundException, UnsupportedEncodingException, EmptyRoomException {
+        emptyRoom(current.stuff);
             int i = 0;
             System.out.println("What do ye want to get? Select a number (if ye want to cancel, just type any letter!).");
             for (Object o:current.stuff
@@ -268,8 +279,6 @@ public class Adventure {
             else System.out.println("Changed yer mind?");
 
         }
-        else System.out.println("Nary a thing is here to be gotten!");
-    }
 
     // for all goX's
     // EFFECTS: Moves player in the desired direction, then provides an overview of the new current room.
@@ -311,6 +320,13 @@ public class Adventure {
         while (!choose());
     }
 
+    //EFFECTS: throws EmptyRoomException if List<Object> is empty.
+    public void emptyRoom(List<Object> room) throws EmptyRoomException{
+        if (!(room.size() > 0)){
+            throw new EmptyRoomException();
+        }
+
+    }
 
 
     public static ArrayList<String> splitOnSpace(String line) {

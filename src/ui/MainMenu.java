@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
@@ -23,30 +24,36 @@ public class MainMenu {
             try {
                 save1 = Files.readAllLines(Paths.get("save1.txt"));
             } catch (IOException e) {
-                System.out.println("ERROR!!! PLEASE READ:");
-                System.out.println("Some dummy deleted save1. Go ahead and make a new file called 'save1.txt' Write 'Blank' " +
-                        "in line 1, -100 in line 2, and -100 in line 3.");
-                System.exit(0);
+                PrintWriter writer = new PrintWriter("save1.txt", "UTF-8");
+                writer.println("New Game");
+                writer.println(Integer.toString(-100));
+                writer.println(Integer.toString(-100));
+                writer.close();
+                save1 = Files.readAllLines(Paths.get("save1.txt"));
             }
         }
         {
             try {
                 save2 = Files.readAllLines(Paths.get("save2.txt"));
             } catch (IOException e) {
-                System.out.println("ERROR!!! PLEASE READ:");
-                System.out.println("Some dummy deleted save2. Go ahead and make a new file called 'save1.txt' Write 'Blank' " +
-                        "in line 1, -100 in line 2, and -100 in line 3.");
-                System.exit(0);
+                PrintWriter writer = new PrintWriter("save2.txt", "UTF-8");
+                writer.println("New Game");
+                writer.println(Integer.toString(-100));
+                writer.println(Integer.toString(-100));
+                writer.close();
+                save2 = Files.readAllLines(Paths.get("save2.txt"));
             }
         }
         {
             try {
                 save3 = Files.readAllLines(Paths.get("save3.txt"));
             } catch (IOException e) {
-                System.out.println("ERROR!!! PLEASE READ:");
-                System.out.println("Some dummy deleted save3. Go ahead and make a new file called 'save1.txt' Write 'Blank' " +
-                        "in line 1, -100 in line 2, and -100 in line 3.");
-                System.exit(0);
+                PrintWriter writer = new PrintWriter("save3.txt", "UTF-8");
+                writer.println("New Game");
+                writer.println(Integer.toString(-100));
+                writer.println(Integer.toString(-100));
+                writer.close();
+                save3 = Files.readAllLines(Paths.get("save3.txt"));
             }
         }
         while (!begin()){}
@@ -64,8 +71,8 @@ public class MainMenu {
             Adventure adventure = null;
             try {
                 adventure = new Adventure(save1.get(0), (Integer.parseInt(save1.get(1))), (Integer.parseInt(save1.get(2))));
-            } catch (IOException | IndexOutOfBoundsException | NullPointerException e) {
-                System.out.println("This file is corrupted!");
+            } catch (IOException | IndexOutOfBoundsException | NullPointerException | NumberFormatException e) {
+                System.out.println("That file is corrupted!");
             }
             adventure.start();
             return true;
@@ -74,8 +81,8 @@ public class MainMenu {
             Adventure adventure = null;
             try {
                 adventure = new Adventure(save2.get(0), (Integer.parseInt(save2.get(1))), (Integer.parseInt(save2.get(2))));
-            } catch (IOException | IndexOutOfBoundsException | NullPointerException e) {
-                System.out.println("This file is corrupted!");
+            } catch (IOException | IndexOutOfBoundsException | NullPointerException | NumberFormatException e) {
+                System.out.println("That file is corrupted!");
             }
             adventure.start();
             return true;
@@ -84,8 +91,8 @@ public class MainMenu {
             Adventure adventure = null;
             try {
                 adventure = new Adventure(save3.get(0), (Integer.parseInt(save3.get(1))), (Integer.parseInt(save3.get(2))));
-            } catch (IOException | IndexOutOfBoundsException | NullPointerException e) {
-                System.out.println("This file is corrupted!");
+            } catch (IOException | IndexOutOfBoundsException | NullPointerException | NumberFormatException e) {
+                System.out.println("That file is corrupted!");
             }
             adventure.start();
             return true;
