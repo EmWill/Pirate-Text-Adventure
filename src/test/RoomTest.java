@@ -1,5 +1,6 @@
 package test;
 import model.Object;
+import model.Player;
 import model.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,11 +14,14 @@ import java.util.Scanner;
 
 public class RoomTest {
     private Room testRoom;
+    private Player testPirate;
 
     @BeforeEach
     public void initialize() {
+            testPirate = new Player(0, "blank", 0, 0);
+
         testRoom = new Room("test room", "Welcome to the twisted test room. There's not much here, I'm afraid.",
-                new ArrayList<Object>(), 0, 0);
+                new ArrayList<Object>(), 0, 0, false, false, false,false, testPirate );
     }
 
 

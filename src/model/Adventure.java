@@ -15,24 +15,50 @@ public class Adventure {
     public Player player;
     public Room current;
     public Room quarters;
+    public Room longhall;
     public ArrayList<Room> map;
-    List<String> lines = Files.readAllLines(Paths.get("inputfile.txt"));
+    List<String> lines = Files.readAllLines(Paths.get("save1.txt"));
 
 
 
 
-    public Adventure() throws IOException {
-        player = new Player(0, "Blank",
-                (Integer.parseInt((String)lines.get(0))),
-                (Integer.parseInt((String)lines.get(1))));
+    public Adventure(String startingName, int startingX, int startingY) throws IOException {
+        player = new Player(0, startingName,
+                startingX,
+                startingY);
+
+        // List of objects for longhall
+        ArrayList<Object> longhlallList = new ArrayList<Object>();
+        longhlallList.add(new Sword("rusty useless thing", 0, "i'm surprised you're even " +
+                "holding this thing", "a useless rusty sword..." +
+                " god i hate that useless rusty sword"));
+
+
         current = new Room ("error room", "uh oh! you shouldn't be here. tell miles and he'll fix it lol",
-                new ArrayList<Object>(), 69, 420);
+                new ArrayList<Object>(), 69, 420, false, false, false, false, player);
+
         quarters = new Room("Captain's Quarters", "You stand in your luxurious quarters. To your north is" +
                 " a long stretch of hallway. You begin to wish you hadn't installed that labyrinth between you and" +
-                " the upper deck.", new ArrayList<Object>(), 0, 0);
+                " the upper deck.", new ArrayList<Object>(), 0, 0,
+                true,
+                false,
+                false,
+                false,
+                player);
+
+        longhall = new Room("loooong hallway", "something about this place gives you an itch" +
+                " in your back that you can't quite reach. there's something ahead, but miles hasn't added it yet.",
+                longhlallList, 0, 1,
+                false,
+                false,
+                true,
+                false,
+                player);
         map = new ArrayList<Room>();
         map.add(quarters);
+        map.add(longhall);
     }
+
 
     public void start() throws FileNotFoundException, UnsupportedEncodingException {
         if (player.pirateX == -100){
@@ -42,14 +68,15 @@ public class Adventure {
             levelOne();
         }
         else {updateRoom();
-            current.overview();}
-    }
+            current.overview();
+        while(!choose()){}
+    }}
 
     public void levelOne() throws FileNotFoundException, UnsupportedEncodingException {
         while(!namepicker()){}
     }
 
- public boolean namepicker() throws FileNotFoundException, UnsupportedEncodingException {
+ private boolean namepicker() throws FileNotFoundException, UnsupportedEncodingException {
         String choice = "";
         choice = scanner.nextLine();
         if (choice.equals("fuck")){
@@ -65,7 +92,7 @@ public class Adventure {
         return true;
  }
 
-    public boolean firstdrink() throws FileNotFoundException, UnsupportedEncodingException {
+    private boolean firstdrink() throws FileNotFoundException, UnsupportedEncodingException {
         System.out.println("AYE.. ye best be selecting a reasonable integarrrrrr");
         int quantity = 0;
         if (notInt()){
@@ -91,20 +118,23 @@ public class Adventure {
         System.out.println("...and you're just durnk enough to pull this off...");
         player.pirateX = 0;
         player.pirateY = 0;
-        save();
         updateRoom();
-    current.overview();}
+    current.overview();
+    scanner.nextLine();
+        while (!choose());}
         return true;}
-    else return false;}
+    else System.out.println("HEY! that's not a number!");
+        return false;}
 
     // EFFECTS: returns false if next scanner input isn't an integer
     private boolean notInt(){
         if (!scanner.hasNextInt())
-        {System.out.println("hey! that's not a number!");
-        scanner.nextLine();
+        { scanner.nextLine();
         return false;}
     return true;}
 
+    // EFFECTS: updates current room to the room matching the player's coordinates
+    // MODIFIES: this
     public void updateRoom(){
         for (Room r: map
              ) {
@@ -116,13 +146,143 @@ public class Adventure {
         }
     }
 
-    public void save() throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter writer = new PrintWriter("inputfile.txt", "UTF-8");
+    // EFFECTS: save's player's coordinates, to be reloaded when they restart the game.
+    // MODIFIES: save1.txt
+    private void save() throws FileNotFoundException, UnsupportedEncodingException {
+        PrintWriter writer = new PrintWriter("save1.txt", "UTF-8");
         writer.println(Integer.toString(player.pirateX));
         writer.println(Integer.toString(player.pirateY));
         writer.close();
+        System.out.println("Yer game be saved!");
+        while(!choose());
 
     }
+
+    // EFFECTS: allows player to choose an action from the list.
+    private boolean choose() throws FileNotFoundException, UnsupportedEncodingException {
+        String choice;
+        System.out.println("Aye.. what will ye do next?");
+        System.out.println("(type ? for help)");
+        choice = scanner.nextLine();
+        if (choice.equals("?")){help();}
+        else if (choice.equals("n")){goNorth();}
+        else if (choice.equals("s")){goSouth();}
+        else if (choice.equals("w")){goWest();}
+        else if (choice.equals("e")){goEast();}
+        else if (choice.equals("save")){save();}
+        else if (choice.equals("look")){current.overview(); while(!choose());}
+        else if (choice.equals("inventory")){player.getInventory(); while (!choose());}
+        else if (choice.equals("weapon")){player.getEquipment(); while (!choose());}
+        else if (choice.equals("equip")){equipSelect();}
+        else if (choice.equals("ammo")){System.out.println(player.checkAmmo(player.currentWeapon)); while (!choose());}
+        else if (choice.equals("get")){get(); while (!choose());}
+        else {System.out.println("I don't know that guy... Did you spell something wrong?");
+            return false;}
+        return true;
+
+    }
+
+    // EFFECTS: displays a list of controls for the player
+    private void help() throws FileNotFoundException, UnsupportedEncodingException {
+        System.out.println("?: help");
+        System.out.println("n: go north");
+        System.out.println("s: go south");
+        System.out.println("w: go west");
+        System.out.println("e: go east");
+        System.out.println("save: save");
+        System.out.println("look: read description again");
+        System.out.println("inventory: displays your inventory");
+        System.out.println("weapon: check yer current weapon");
+        System.out.println("equip: equip a new weapon");
+        System.out.println("ammo: check yer equipped weapon's ammo");
+        while (!choose());
+    }
+
+    // EFFECTS: change's player's equipped weapon based on player choice
+    // MODIFIES: player
+    private void equipSelect() throws FileNotFoundException, UnsupportedEncodingException {
+        String pick;
+        System.out.println("What from yer inventory do ye want to equip?");
+        pick = scanner.nextLine();
+        if (player.equip(pick)){
+            player.equip(pick);
+            System.out.println("Ye've equipped " + pick);
+            while(!choose());
+        }
+        else if (!player.equip(pick)) {System.out.println("Uh, did ye spell it right?");
+        while(!choose());}
+    }
+
+    private void get() throws FileNotFoundException, UnsupportedEncodingException {
+        if (current.stuff.size() > 0) {
+            int i = 0;
+            System.out.println("What do ye want to get? (select number, or type any letter to cancel!)");
+            for (Object o:current.stuff
+                 ) {
+                i++;
+                System.out.println(Integer.toString(i) + ": " + o.getName());
+            }
+            if (notInt()){
+            int choice = scanner.nextInt();
+            if (choice > 0 && choice <= i){
+                Object thing = current.stuff.get(choice - 1);
+                if (thing.obtainable()){
+                    System.out.println("Ye get " + (thing.getName()));
+                player.inventory.add(current.stuff.get(choice - 1));
+                current.stuff.remove(choice - 1); }
+                else System.out.println("Ye can't fit that in yer pockets!");
+                scanner.nextLine();
+
+            }
+            else {System.out.println("This room doesn't have that many items!");
+            }}
+            else System.out.println("Changed yer mind?");
+
+        }
+        else System.out.println("Nary a thing is here to be gotten!");
+    }
+
+    // for all goX's
+    // EFFECTS: Moves player in the desired direction, then provides an overview of the new current room.
+    // otherwise, informs player if path is blocked.
+    // MODIFIES: player
+    private void goNorth() throws FileNotFoundException, UnsupportedEncodingException {
+        if(this.current.n){
+        player.goNorth();
+        updateRoom();
+        current.overview();}
+        else{System.out.println("Aye! that path be blocked!");}
+        while (!choose());
+    }
+
+    private void goSouth() throws FileNotFoundException, UnsupportedEncodingException {
+       if(this.current.s){
+           player.goSouth();
+        updateRoom();
+        current.overview();}
+        else{System.out.println("Aye! That path be blocked!");}
+        while (!choose());
+    }
+
+    private void goWest() throws FileNotFoundException, UnsupportedEncodingException {
+        if(this.current.w){
+            player.goWest();
+            updateRoom();
+            current.overview();}
+        else{System.out.println("Aye! That path be blocked!");}
+        while (!choose());
+    }
+
+    private void goEast() throws FileNotFoundException, UnsupportedEncodingException {
+        if(this.current.e){
+            player.goEast();
+            updateRoom();
+            current.overview();}
+        else{System.out.println("Aye! That path be blocked!");}
+        while (!choose());
+    }
+
+
 
     public static ArrayList<String> splitOnSpace(String line) {
         String[] splits = line.split(" ");
