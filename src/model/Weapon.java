@@ -1,6 +1,6 @@
 package model;
 
-public abstract class Weapon implements Fighter, Object {
+public abstract class Weapon implements Fighter, Item {
     protected String title;
     protected Boolean canObtain;
     protected int slapDamage;
@@ -28,7 +28,7 @@ public abstract class Weapon implements Fighter, Object {
         return itemDescription;
     }
 
-    //EFFECTS: returns true if item can be added to player's inventory
+    //EFFECTS: returns true if item can be added to captain's inventory
     @Override
     public boolean obtainable() {
         return canObtain;

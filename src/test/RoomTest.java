@@ -1,5 +1,6 @@
 package test;
-import model.Object;
+import model.Item;
+import model.Mob;
 import model.Player;
 import model.Room;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,24 +10,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.HashMap;
 
 public class RoomTest {
     private Room testRoom;
-    private Player testPirate;
+    private Mob testPirate;
 
     @BeforeEach
     public void initialize() {
             testPirate = new Player(0, "blank", 0, 0);
 
         testRoom = new Room("test room", "Welcome to the twisted test room. There's not much here, I'm afraid.",
-                new ArrayList<Object>(), 0, 0, false, false, false,false, testPirate );
+                new HashMap<>(), 0, 0, false, false, false,false, "none" );
     }
 
 
     @Test
-    public void overviewTest() {
+    public void overviewTest() throws FileNotFoundException, UnsupportedEncodingException {
         testRoom.overview();
         assertEquals(1, 1);
     }

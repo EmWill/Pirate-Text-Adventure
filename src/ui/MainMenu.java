@@ -79,6 +79,7 @@ public class MainMenu {
         }
         else if (choice.equals("2") || choice.equals(save2.get(0))){
             Adventure adventure = null;
+
             try {
                 adventure = new Adventure(save2.get(0), (Integer.parseInt(save2.get(1))), (Integer.parseInt(save2.get(2))));
             } catch (IOException | IndexOutOfBoundsException | NullPointerException | NumberFormatException e) {

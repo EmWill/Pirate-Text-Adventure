@@ -3,7 +3,6 @@ package test;
 import model.Gun;
 import model.Player;
 import model.Sword;
-import model.Weapon;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,7 +20,7 @@ public class PlayerTest {
     @Test
     public void newNameJimmy(){
         testPirate.nameSet("Jimmy");
-        assertEquals("Jimmy", testPirate.getPirateName());
+        assertEquals("Jimmy", testPirate.getMobName());
     }
 
     @Test
