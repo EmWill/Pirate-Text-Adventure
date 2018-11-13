@@ -1,8 +1,8 @@
 package model;
 
-public class Sword extends Weapon {
+public class Melee extends Weapon {
 
-    public Sword(String name, int damage, String slapscription, String description) {
+    public Melee(String name, int damage, String slapscription, String description) {
         super(name, damage, slapscription, description);
     }
 

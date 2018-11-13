@@ -1,5 +1,6 @@
-package model;
+package ui;
 import exceptions.EmptyRoomException;
+import model.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,13 +15,7 @@ public class Adventure {
     public Player captain;
     public Player firstMate;
     public Player currentPlayer;
-    public Room current;
-    public Room quarters;
-    public Room longhall;
-    public Room hallEnd;
-    public ArrayList<Room> map;
-    public List<NPC> goons;
-    private Random rand = new Random();
+    public Dungeon dungeon;
     List<String> file1 = Files.readAllLines(Paths.get("save1.txt"));
     List<String> file2 = Files.readAllLines(Paths.get("save2.txt"));
     List<String> file3 = Files.readAllLines(Paths.get("save3.txt"));
@@ -33,61 +28,20 @@ public class Adventure {
                 startingY);
         firstMate = new Player(0, "Blank", 0, 2);
 
-        Weapon darkness = new Sword("testSword", 12, "gives you a big smack",
+        Weapon darkness = new Melee("testSword", 1, "gives you a big smack",
                 "a dark and evil sword");
-        Weapon testGun = new Gun("testGun", 1000, "bang", "a rusty revolver",
+        Weapon testGun = new Gun("testGun", 2, "bang", "a rusty revolver",
                 6);
         captain.inventory.add(testGun);
         captain.inventory.add(darkness);
-
-        //List of goons incoming:
-        NPC rat = new NPC(1, 0, "Ratta 2E.", "There are some nuts and bolts on the floor...",
-                "A perfect replica of a rat stands before you... stay on guard.");
-
-        // List of objects for longhall
-        Map<String, Item> longhlallList = new HashMap<>();
-        longhlallList.put("rusty sword", new Sword("rusty sword", 0, "i'm surprised you're even " +
-                "holding this thing", "a useless rusty sword..." +
-                " god i hate that useless rusty sword"));
-
-
-        current = new Room ("error room", "uh oh! you shouldn't be here. tell miles and he'll fix it lol",
-                new HashMap<>(), 69, 420, false, false, false, false, "none");
-
-        quarters = new Room("Captain's Quarters", "You stand in your luxurious quarters. To your north is" +
-                " a long stretch of hallway. You begin to wish you hadn't installed that labyrinth between you and" +
-                " the upper deck.", new HashMap<>(), 0, 0,
-                true,
-                false,
-                false,
-                false,
-                "none");
-
-        longhall = new Room("loooong hallway", "something about this place gives you an itch" +
-                " in your back that you can't quite reach. It will take some time to reach the other end of the hall." +
-                " Make sure you're ready.",
-                longhlallList, 0, 1,
-                true,
-                false,
-                true,
-                false,
-                "none");
-        hallEnd = new Room("end of long hallway", "Let's hope we don't have to walk down another hall that" +
-                " long!", new HashMap<>(), 0, 2, false , false , true , false,
-                "firstMate");
-        map = new ArrayList<Room>();
-        goons = new ArrayList<NPC>();
-        addRoom(quarters);
-        addRoom(longhall);
-        addRoom(hallEnd);
-        goons.add(rat);
         currentPlayer = captain;
+        this.dungeon = new Dungeon(this);
     }
 
 
     public void start() throws FileNotFoundException, UnsupportedEncodingException {
-        for (NPC goon: goons
-             ) {updateRoomMob(goon);
+        for (NPC goon: dungeon.goons
+             ) {dungeon.updateRoomMob(goon);
 
         }
         if (captain.pirateX == -100){
@@ -96,7 +50,7 @@ public class Adventure {
             System.out.println(" percent drunk... Wait! That's a terrible name! What's your real name?");
             levelOne();
         }
-        else {updateRoom();
+        else {dungeon.updateRoom(currentPlayer);
             currentPlayer.currentRoom.overview();
         while(!choose()){}
     }}
@@ -151,7 +105,7 @@ public class Adventure {
         System.out.println("...and you're just durnk enough to pull this off...");
         currentPlayer.pirateX = 0;
         currentPlayer.pirateY = 0;
-        updateRoom();
+        dungeon.updateRoom(currentPlayer);
     currentPlayer.currentRoom.overview();
     scanner.nextLine();
         while (!choose());}
@@ -180,7 +134,7 @@ public class Adventure {
             scanner.nextLine();
             System.out.println("Let's pan over to them now! What was their name again?");
             while(!namepicker()){}
-            updateRoom();
+            dungeon.updateRoom(currentPlayer);
             currentPlayer.currentRoom.overview();
         }
 
@@ -191,34 +145,6 @@ public class Adventure {
         return false;}
     return true;}
 
-    // EFFECTS: updates current room to the room matching the captain's coordinates
-    // MODIFIES: currentPlayer
-    public void updateRoom(){
-        for (Room r: map
-             ) {
-            if (r.roomX == currentPlayer.pirateX){
-                if (r.roomY == currentPlayer.pirateY){
-                    currentPlayer.currentRoom.removePirate(currentPlayer);
-                    currentPlayer.setRoom(r);
-                }
-            }
-        }
-    }
-
-    // EFFECTS: Changes NPC's current room
-    // MODIFIES: NPC
-    public void updateRoomMob(NPC n){
-        for (Room r: map
-             ) {
-            if (r.roomX == n.pirateX){
-                if (r.roomY == n.pirateY){
-                    n.currentRoom.removeMob(n);
-                    n.setRoom(r);
-                }
-            }
-
-        }
-    }
 
     // EFFECTS: saves captain's progress on whichever file they choose.
     // MODIFIES: save1.txt, save2.txt, save3.txt
@@ -264,10 +190,10 @@ public class Adventure {
         System.out.println("(type ? for help)");
         choice = scanner.nextLine();
         if (choice.equals("?")){help();}
-        else if (choice.equals("n")){goNorth();}
-        else if (choice.equals("s")){goSouth();}
-        else if (choice.equals("w")){goWest();}
-        else if (choice.equals("e")){goEast();}
+        else if (choice.equals("n")){dungeon.goNorth(currentPlayer); while (!choose()){}}
+        else if (choice.equals("s")){dungeon.goSouth(currentPlayer); while (!choose()){}}
+        else if (choice.equals("w")){dungeon.goWest(currentPlayer); while (!choose()){}}
+        else if (choice.equals("e")){dungeon.goEast(currentPlayer); while (!choose()){}}
         else if (choice.equals("save")){save();}
         else if (choice.equals("look")){
             currentPlayer.currentRoom.overview(); while(!choose());}
@@ -344,51 +270,7 @@ public class Adventure {
 
         }
 
-    // for all goX's
-    // EFFECTS: Moves captain in the desired direction, then provides an overview of the new current room.
-    // otherwise, informs captain if path is blocked.
-    // MODIFIES: captain
-    private void goNorth() throws FileNotFoundException, UnsupportedEncodingException {
-        if(this.currentPlayer.currentRoom.n){
-        currentPlayer.goNorth();
-        updateRoom();
-        currentPlayer.currentRoom.overview();}
-        else{System.out.println("Aye! that path be blocked!");}
-        advanceTime();
-        while (!choose());
-    }
 
-    private void goSouth() throws FileNotFoundException, UnsupportedEncodingException {
-       if(this.currentPlayer.currentRoom.s){
-           currentPlayer.goSouth();
-        updateRoom();
-        currentPlayer.currentRoom.overview();}
-        else{System.out.println("Aye! That path be blocked!");}
-        advanceTime();
-        while (!choose());
-    }
-
-    private void goWest() throws FileNotFoundException, UnsupportedEncodingException {
-        if(this.currentPlayer.currentRoom.w){
-            currentPlayer.goWest();
-            updateRoom();
-            currentPlayer.currentRoom.overview();}
-        else{System.out.println("Aye! That path be blocked!");}
-        advanceTime();
-        while (!choose());
-    }
-
-    private void goEast() throws FileNotFoundException, UnsupportedEncodingException {
-        if(this.currentPlayer.currentRoom.e){
-            currentPlayer.goEast();
-            updateRoom();
-            currentPlayer.currentRoom.overview();}
-        else{System.out.println("Aye! That path be blocked!");}
-        advanceTime();
-        while (!choose());
-    }
-
-    //TODO: CHECK TO MAKE SURE SIZE CAN ACTUALLY BE RETRIEVED LIKE THAT FROM A HASHMAP!
     //EFFECTS: throws EmptyRoomException if List<Item> is empty.
     public void emptyRoom(Map<String, Item> roomStuff) throws EmptyRoomException{
         if (!(roomStuff.size() > 0)){
@@ -402,91 +284,6 @@ public class Adventure {
         String[] splits = line.split(" ");
         return new ArrayList(Arrays.asList(splits));
     }
-
-    // kind of redundant right now.
-    // EFFECTS: adds room to game map
-    private void addRoom(Room room){
-        if(!map.contains(room)){
-            map.add(room);
-            room.setAdventure(this);
-        }
-    }
-
-
-    // TODO: Updates all NPC behavior.
-    private void advanceTime(){
-        for (NPC goon: goons
-             ) {findPath(goon);
-
-        }
-
-    }
-    // TODO: Selects appropriate path for NPC.
-    private void findPath(NPC npc){
-int i = oneDFour();
-    if (i == 1){
-    npcRolledNorth(npc);
-    }
-        if (i == 2){
-            npcRolledWest(npc);
-        }
-        if (i == 3){
-            npcRolledSouth(npc);
-        }
-        if (i == 4) {
-        npcRolledEast(npc);
-}
-    }
-
-    public void npcRolledNorth(NPC npc){
-        if (npc.currentRoom.n){
-            npc.goNorth();
-            updateRoomMob(npc);
-        }
-        else if (npc.currentRoom.s){
-            npc.goSouth();
-            updateRoomMob(npc);
-        }
-    }
-
-    public void npcRolledWest(NPC npc){
-        if (npc.currentRoom.w){
-            npc.goWest();
-            updateRoomMob(npc);
-        }
-        else if (npc.currentRoom.e){
-            npc.goEast();
-            updateRoomMob(npc);
-        }
-    }
-
-    public void npcRolledSouth(NPC npc){
-        if (npc.currentRoom.s){
-            npc.goSouth();
-            updateRoomMob(npc);
-        }
-        else if (npc.currentRoom.n){
-            npc.goNorth();
-            updateRoomMob(npc);
-        }
-    }
-
-    public void npcRolledEast(NPC npc){
-        if (npc.currentRoom.e){
-            npc.goEast();
-            updateRoomMob(npc);
-        }
-        else if (npc.currentRoom.w){
-            npc.goWest();
-            updateRoomMob(npc);
-        }
-    }
-
-    public int oneDFour(){
-        return (rand.nextInt(4 - 1 + 1) + 1);
-    }
-
-
 
 
 }

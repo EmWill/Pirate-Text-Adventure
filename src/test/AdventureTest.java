@@ -1,7 +1,7 @@
 package test;
 import exceptions.EmptyRoomException;
-import model.Adventure;
-import model.Sword;
+import model.Melee;
+import ui.Adventure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,24 +23,24 @@ public class AdventureTest {
     public void updateRoomTestQuarterpass(){
         testAdventure.captain.pirateX = 0;
         testAdventure.captain.pirateY = 0;
-        testAdventure.updateRoom();
-        assertEquals(testAdventure.captain.currentRoom, testAdventure.quarters);
+        testAdventure.dungeon.updateRoom(testAdventure.currentPlayer);
+        assertEquals(testAdventure.captain.currentRoom, testAdventure.dungeon.quarters);
     }
 
     @Test
     public void updateRoomTestQuarterfailY(){
         testAdventure.captain.pirateX = 0;
         testAdventure.captain.pirateY = 1;
-        testAdventure.updateRoom();
-        assertFalse(testAdventure.captain.currentRoom == testAdventure.quarters);
+        testAdventure.dungeon.updateRoom(testAdventure.currentPlayer);
+        assertFalse(testAdventure.captain.currentRoom == testAdventure.dungeon.quarters);
     }
 
     @Test
     public void updateRoomTestQuarterfailX(){
         testAdventure.captain.pirateX = 1;
         testAdventure.captain.pirateY = 0;
-        testAdventure.updateRoom();
-        assertFalse(testAdventure.captain.currentRoom == testAdventure.quarters);
+        testAdventure.dungeon.updateRoom(testAdventure.currentPlayer);
+        assertFalse(testAdventure.captain.currentRoom == testAdventure.dungeon.quarters);
     }
 
   @Test
@@ -54,7 +54,7 @@ public class AdventureTest {
 
     @Test
     public void emptyRoomTestNotEmpty(){
-        testAdventure.captain.currentRoom.stuff.put("Sword", new Sword(" ", 0,  " ", " "));
+        testAdventure.captain.currentRoom.stuff.put("Melee", new Melee(" ", 0,  " ", " "));
         try {
             testAdventure.emptyRoom(testAdventure.captain.currentRoom.stuff);
         } catch (EmptyRoomException e) {

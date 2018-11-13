@@ -1,8 +1,8 @@
 package test;
 
 import model.Gun;
+import model.Melee;
 import model.Player;
-import model.Sword;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -77,9 +77,9 @@ public class PlayerTest {
 
     @Test
     public void equipTestMiddleItem(){
-        testPirate.inventory.add(new Sword("Chinese Chicken", 12, "test", "test2"));
-        testPirate.inventory.add(new Sword("Za Warudo", 24, "slaps", "wicked"));
-        testPirate.inventory.add(new Sword("Dark Necklace", 100, "dark evil energy",
+        testPirate.inventory.add(new Melee("Chinese Chicken", 12, "test", "test2"));
+        testPirate.inventory.add(new Melee("Za Warudo", 24, "slaps", "wicked"));
+        testPirate.inventory.add(new Melee("Dark Necklace", 100, "dark evil energy",
                 "twisted"));
         assertTrue(testPirate.equip("Za Warudo"));
         assertEquals(testPirate.currentWeapon.getName(), "Za Warudo");
@@ -89,9 +89,9 @@ public class PlayerTest {
 
     @Test
     public void equipTestFirstItem(){
-        testPirate.inventory.add(new Sword("Chinese Chicken", 12, "test", "test2"));
-        testPirate.inventory.add(new Sword("Za Warudo", 24, "slaps", "wicked"));
-        testPirate.inventory.add(new Sword("Dark Necklace", 100, "dark evil energy",
+        testPirate.inventory.add(new Melee("Chinese Chicken", 12, "test", "test2"));
+        testPirate.inventory.add(new Melee("Za Warudo", 24, "slaps", "wicked"));
+        testPirate.inventory.add(new Melee("Dark Necklace", 100, "dark evil energy",
                 "twisted"));
         assertTrue(testPirate.equip("Chinese Chicken"));
         assertEquals(testPirate.currentWeapon.getName(), "Chinese Chicken");
@@ -101,7 +101,7 @@ public class PlayerTest {
 
     @Test
     public void checkAmmoSword(){
-       Sword chicken = new Sword("Chinese Chicken", 12, "test", "test2");
+       Melee chicken = new Melee("Chinese Chicken", 12, "test", "test2");
         testPirate.inventory.add(chicken);
         Gun gun = new Gun("the gun", 24, "slaps", "test", 100);
         testPirate.inventory.add(gun);

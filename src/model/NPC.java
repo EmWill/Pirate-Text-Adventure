@@ -5,10 +5,12 @@ import java.util.Objects;
 public class NPC extends Mob implements Fighter {
     public String trace;
     public String description;
-    public NPC(int y, int x, String name, String trace, String description) {
+    public Boolean hostile;
+    public NPC(int y, int x, String name, String trace, String description, Boolean hostile, Weapon currentWeapon) {
         super(y, x, name);
         this.trace = trace;
         this.description = description;
+        this.hostile = hostile;
     }
 
     @Override

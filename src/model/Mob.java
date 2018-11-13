@@ -20,7 +20,7 @@ public abstract class Mob {
         pirateY = y;
         currentRoom = new Room ("error room", "uh oh! you shouldn't be here. tell miles and he'll fix it lol",
                  new HashMap<>(), 69, 420, false, false, false, false,  "none");
-        currentWeapon = new Sword("yer own fists", 1, "ya give em a good punch",
+        currentWeapon = new Melee("yer own fists", 1, "ya give em a good punch",
                 "ye better find a weapon fast.");
         pirateX = x;
         inventory = new ArrayList<Item>();

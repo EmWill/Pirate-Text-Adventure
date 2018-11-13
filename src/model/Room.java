@@ -1,5 +1,7 @@
 package model;
 
+import ui.Adventure;
+
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
