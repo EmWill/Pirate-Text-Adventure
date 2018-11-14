@@ -203,6 +203,14 @@ public class Adventure {
             currentPlayer.getEquipment(); while (!choose());}
         else if (choice.equals("equip")){equipSelect();}
         else if (choice.equals("ammo")){System.out.println(captain.checkAmmo(captain.currentWeapon)); while (!choose());}
+        else if (choice.equals("use")){
+            try {
+                use();
+            } catch (EmptyRoomException e) {
+                System.out.println("There's nary a thing to use!");
+            }
+            finally {
+                while (!choose());}}
         else if (choice.equals("get")){
             try {
                 get();
@@ -253,7 +261,6 @@ public class Adventure {
     //MODIFIES: captain, current room.
     private void get() throws FileNotFoundException, UnsupportedEncodingException, EmptyRoomException {
         emptyRoom(currentPlayer.currentRoom.stuff); // checks to see if EmptyRoomException needs to be thrown
-            int i = 0;
             System.out.println("What do ye want to get? (if ye want to cancel, just type any letter!).");
             String choice = scanner.nextLine();
             if (currentPlayer.currentRoom.itemMatch(choice)){
@@ -267,6 +274,17 @@ public class Adventure {
 
             }
             else System.out.println("Changed yer mind?");
+
+        }
+
+        private void use() throws EmptyRoomException {
+            emptyRoom(currentPlayer.currentRoom.stuff);
+        System.out.println("What do ye want to use?");
+        String choice = scanner.nextLine();
+        if (currentPlayer.currentRoom.itemMatch(choice)){
+            Item thing = currentPlayer.currentRoom.stuff.get(choice);
+            thing.use();
+        }
 
         }
 

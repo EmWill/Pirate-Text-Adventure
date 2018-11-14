@@ -1,7 +1,7 @@
 package test;
 
 import api.ReadWebPageEx;
-import api.WeatherParser;
+import api.Parser;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,15 +10,15 @@ import java.io.IOException;
 
 public class ReadWebPageExTest {
     private ReadWebPageEx testReader;
-    private WeatherParser testParser;
+    private Parser testParser;
 
     @BeforeEach
    public void initialize()
     {testReader = new ReadWebPageEx();
-    testParser = new WeatherParser();}
+    testParser = new Parser();}
 
 @Test
-    public void test(){
+    public void vancouverWeather(){
     try {
         testReader.main();
     } catch (IOException e) {
@@ -29,7 +29,7 @@ public class ReadWebPageExTest {
 //@Test
 //    public void testTwo(){
 //    try {
-//        System.out.println(testParser.parseLibrary(testReader.returnData()));
+//        System.out.println(testParser.parseLibrary(testReader.returnDataWeather()));
 //    } catch (JSONException e) {
 //        e.printStackTrace();
 //    } catch (IOException e) {
@@ -38,9 +38,31 @@ public class ReadWebPageExTest {
 //}
 
     @Test
-    public void testThree(){
+    public void testReturnWeatherData(){
         try {
-            System.out.println(testParser.parseArray(testReader.returnData()));
+            System.out.println(testParser.parseArray(testReader.returnDataWeather()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testReturnCity(){
+        try {
+            System.out.println(testParser.parseCity(testReader.returnLocationData()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testReturnCountry(){
+        try {
+            System.out.println(testParser.parseCountry(testReader.returnLocationData()));
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -50,7 +72,7 @@ public class ReadWebPageExTest {
 
     public String testThreeReturn(){
         try {
-            return (testParser.parseArray(testReader.returnData()));
+            return (testParser.parseArray(testReader.returnDataWeather()));
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {

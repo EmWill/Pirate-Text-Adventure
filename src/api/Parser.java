@@ -7,7 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class WeatherParser {
+public class Parser {
 
     /**
      * Prints library parsed from JSON data to console
@@ -44,4 +44,21 @@ public class WeatherParser {
         return weatherObj.getString("main");
 
     }
+
+    public String parseCity(String jsonData) throws JSONException{
+        JSONArray array = new JSONArray(jsonData);
+        JSONObject object = array.getJSONObject(0);
+        String city = object.getString("city");
+        return city;
+
+    }
+
+    public String parseCountry(String jsonData) throws JSONException{
+        JSONArray array = new JSONArray(jsonData);
+        JSONObject object = array.getJSONObject(0);
+        String countryCode = object.getString("countryCode").toLowerCase();
+        return countryCode;
+
+    }
+
 }

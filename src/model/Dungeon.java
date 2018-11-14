@@ -1,7 +1,7 @@
 package model;
 
 import api.ReadWebPageEx;
-import api.WeatherParser;
+import api.Parser;
 import org.json.JSONException;
 import ui.Adventure;
 
@@ -18,7 +18,7 @@ public class Dungeon {
     public List<NPC> goons;
     private Random rand = new Random();
     private ReadWebPageEx reader = new ReadWebPageEx();
-    private WeatherParser weatherParser = new WeatherParser();
+    private Parser weatherParser = new Parser();
     private Adventure adventure;
     private Boolean raining;
 
@@ -38,9 +38,28 @@ public class Dungeon {
                 "holding this thing", "a useless rusty sword..." +
                 " god i hate that useless rusty sword"));
 
+        // List of objects for quarters
+        Map<String, Item> quartersList = new HashMap<>();
+        Book profiles = new Book("pirate profiles", "In your shelf lies " +
+                "a list of all your crewmates");
+        Book legends = new Book("Legends", "");
+        legends.addLiterature(new Chapter("Hero Boy", "He once led a ship all the way to the north pole." +
+                " I'll miss him."));
+        legends.addLiterature(new Chapter("Hero Girl", "Keeps a level head. Always recognizes the easy parts" +
+                " of life. A definite asset to our crew."));
+        Book fools = new Book("Fools", "");
+        fools.addLiterature(new Chapter("Grubby Blubber", "He forgot the pickles... so we threw him overboard"));
+        fools.addLiterature(new Chapter("Enraged Blubber", "He was more powerful than we bargained for..."
+        + " We lost a lot of men that day. It's a miracle I'm still standing."));
+        profiles.addLiterature(legends);
+        profiles.addLiterature(fools);
+        quartersList.put("pirate profiles", profiles);
+
+
+
         quarters = new Room("Captain's Quarters", "You stand in your luxurious quarters. To your north is" +
                 " a long stretch of hallway. You begin to wish you hadn't installed that labyrinth between you and" +
-                " the upper deck.", new HashMap<>(), 0, 0,
+                " the upper deck.", quartersList, 0, 0,
                 true,
                 false,
                 false,
@@ -70,7 +89,8 @@ public class Dungeon {
         + "The path is now clear.",
                 new HashMap<>(), 0, 2,
                 false,
-                false, false,
+                false,
+                true,
                 false,
                 "firstMate"); }
         map = new ArrayList<Room>();
@@ -246,7 +266,7 @@ public class Dungeon {
     //EFFECTS: returns current weather in vancouver
     public String returnWeather(){
         try {
-            return weatherParser.parseArray(reader.returnData());
+            return weatherParser.parseArray(reader.returnDataWeather());
         } catch (JSONException e) {
             System.out.println("Uh oh! Something went wrong! Don't worry! You can keep playing, but the weather " +
                     "functionality is not working.");

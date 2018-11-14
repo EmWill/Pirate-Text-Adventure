@@ -55,4 +55,6 @@ public class NPC extends Mob implements Fighter {
 
         return Objects.hash(trace, description);
     }
+
+
 }

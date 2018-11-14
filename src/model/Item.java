@@ -7,5 +7,7 @@ public interface Item {
 
     public String getName();
 
+    public void use();
+
     public boolean canEquip(); // returns true if an object can be equipped as a weapon
 }

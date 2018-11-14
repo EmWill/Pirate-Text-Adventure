@@ -15,6 +15,11 @@ public abstract class Weapon implements Fighter, Item {
         itemDescription = description;
     }
 
+    @Override
+    public void use(){
+        System.out.println(itemDescription);
+    }
+
     // EFFECTS: prints description of attack and returns damage
     @Override
     public int slap() {
