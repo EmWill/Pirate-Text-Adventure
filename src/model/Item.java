@@ -11,3 +11,5 @@ public interface Item {
 
     public boolean canEquip(); // returns true if an object can be equipped as a weapon
 }
+
+
