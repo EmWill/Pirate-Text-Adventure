@@ -4,6 +4,7 @@ package ui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -13,21 +14,23 @@ public class BetterGamePanel extends JPanel implements ActionListener {
     protected JTextArea textArea;
     private List<String> textHistory;
     private final static String newline = "\n";
+    private MainMenu mainMenu;
 
     public BetterGamePanel() {
         super(new GridBagLayout());
-
+this.mainMenu = new MainMenu();
+mainMenu.setPanel(this);
         textHistory = new ArrayList<>();
-        textHistory.add("");
-        textHistory.add("");
-        textHistory.add("");
-        textHistory.add("");
-        textHistory.add("");
+        for (int i = 0; i <=24 ; i++){
+            textHistory.add("");
+        }
+
+
 
         textField = new JTextField(75);
         textField.addActionListener(this);
 
-        textArea = new JTextArea(25, 75);
+        textArea = new JTextArea(26, 75);
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
 
@@ -35,25 +38,40 @@ public class BetterGamePanel extends JPanel implements ActionListener {
         GridBagConstraints c = new GridBagConstraints();
         c.gridwidth = GridBagConstraints.REMAINDER;
 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        add(textField, c);
+
 
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1.0;
         c.weighty = 1.0;
         add(scrollPane, c);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        add(textField, c);
+
+
     }
 
     public void actionPerformed(ActionEvent evt) {
-        String text = textField.getText();
-        textArea.setText("");
-        textShift(text);
-        textPrint();
-        textField.selectAll();
+//        String text = textField.getText();
+//        textArea.setText("");
+//        textShift(text);
+//        textPrint();
+//        textField.selectAll();
+//
+//
+//        //Make sure the new text is visible, even if there
+//        //was a selection in the text area.
+//        textArea.setCaretPosition(textArea.getDocument().getLength());
+    }
 
-        //Make sure the new text is visible, even if there
-        //was a selection in the text area.
+    public void printText(String text){
+        textArea.append(text + newline);
+        textField.selectAll();
         textArea.setCaretPosition(textArea.getDocument().getLength());
+    }
+
+    public void clearText(){
+        textArea.setText("");
     }
 
     public void textShift(String text){
@@ -77,7 +95,7 @@ else {
         }
     }
 
-    private void textPrint(){
+    public void textPrint(){
         for (int i = textHistory.size(); i > 0; i--){
             textArea.append(textHistory.get(i-1) + newline);
         }
@@ -89,7 +107,7 @@ else {
      * this method should be invoked from the
      * event dispatch thread.
      */
-    public static void createAndShowGUI() {
+    public void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("TextDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,5 +119,6 @@ else {
         frame.pack();
         frame.setVisible(true);
     }
+
 
 }

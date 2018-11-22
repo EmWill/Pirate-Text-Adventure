@@ -4,6 +4,7 @@ import model.Melee;
 import ui.Adventure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ui.BetterGamePanel;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -16,7 +17,7 @@ public class AdventureTest {
 
     @BeforeEach
     public void initialize() throws IOException {
-        testAdventure = new Adventure("John", 100, 100);
+        testAdventure = new Adventure("John", 100, 100, new BetterGamePanel());
     }
 
     @Test

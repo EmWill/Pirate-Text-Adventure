@@ -2,6 +2,8 @@ package ui;
 import exceptions.EmptyRoomException;
 import model.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,19 +12,20 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class Adventure {
+public class Adventure implements ActionListener {
     Scanner scanner = new Scanner(System.in);
     public Player captain;
     public Player firstMate;
     public Player currentPlayer;
     public Dungeon dungeon;
+    public BetterGamePanel gamePanel;
     List<String> file1 = Files.readAllLines(Paths.get("save1.txt"));
     List<String> file2 = Files.readAllLines(Paths.get("save2.txt"));
     List<String> file3 = Files.readAllLines(Paths.get("save3.txt"));
 
 
 
-    public Adventure(String startingName, int startingX, int startingY) throws IOException {
+    public Adventure(String startingName, int startingX, int startingY, BetterGamePanel gamePanel) throws IOException {
         captain = new Player(0, startingName,
                 startingX,
                 startingY);
@@ -36,6 +39,8 @@ public class Adventure {
         captain.inventory.add(darkness);
         currentPlayer = captain;
         this.dungeon = new Dungeon(this);
+        this.gamePanel = gamePanel;
+        gamePanel.textField.addActionListener(this);
     }
 
 
@@ -304,4 +309,8 @@ public class Adventure {
     }
 
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
 }
