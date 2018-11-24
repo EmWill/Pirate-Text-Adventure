@@ -64,6 +64,9 @@ public class Start extends JFrame implements ActionListener {
         {
             try {
                 save1 = Files.readAllLines(Paths.get("save1.txt"));
+                System.out.println(save1.get(0));
+                System.out.println(save1.get(1));
+                System.out.println(save1.get(2));
             } catch (IOException e) {
                 PrintWriter writer = new PrintWriter("save1.txt", "UTF-8");
                 writer.println("New Game");
@@ -76,6 +79,9 @@ public class Start extends JFrame implements ActionListener {
         {
             try {
                 save2 = Files.readAllLines(Paths.get("save2.txt"));
+                System.out.println(save2.get(0));
+                System.out.println(save2.get(1));
+                System.out.println(save2.get(2));
             } catch (IOException e) {
                 PrintWriter writer = new PrintWriter("save2.txt", "UTF-8");
                 writer.println("New Game");
@@ -88,6 +94,9 @@ public class Start extends JFrame implements ActionListener {
         {
             try {
                 save3 = Files.readAllLines(Paths.get("save3.txt"));
+                System.out.println(save3.get(0));
+                System.out.println(save3.get(1));
+                System.out.println(save3.get(2));
             } catch (IOException e) {
                 PrintWriter writer = new PrintWriter("save3.txt", "UTF-8");
                 writer.println("New Game");
@@ -114,7 +123,7 @@ public class Start extends JFrame implements ActionListener {
     }
 
 
-    public boolean begin() throws FileNotFoundException, UnsupportedEncodingException {
+    public void begin() throws FileNotFoundException, UnsupportedEncodingException {
         gamePanel.textArea.setText("");
         gamePanel.printText("PIRATE ADVENTURE! by miles williams who was born in 1999 in case it comes up in a puzzle");
         gamePanel.printText("GRITHAWK GAMING ©");
@@ -128,39 +137,48 @@ public class Start extends JFrame implements ActionListener {
         if (choice.equals("1") || choice.equals(save1.get(0))){
 //            Adventure adventure = null;
             try {
-                adventure = new Adventure(save1.get(0), (Integer.parseInt(save1.get(1))), (Integer.parseInt(save1.get(2))),
-                        gamePanel);
+                this.adventure = new Adventure(save1.get(0), (Integer.parseInt(save1.get(1))), (Integer.parseInt(save1.get(2)))
+                        );
             } catch (IOException | IndexOutOfBoundsException | NullPointerException | NumberFormatException e) {
                 gamePanel.printText("That file is corrupted!");
             }
+
             adventure.start();
-            return true;
+
+//            return true;
         }
         else if (choice.equals("2") || choice.equals(save2.get(0))){
 //            Adventure adventure = null;
 
             try {
-                adventure = new Adventure(save2.get(0), (Integer.parseInt(save2.get(1))), (Integer.parseInt(save2.get(2))),
-                        gamePanel);
+               this.adventure = new Adventure(save2.get(0), (Integer.parseInt(save2.get(1))), (Integer.parseInt(save2.get(2)))
+                        );
             } catch (IOException | IndexOutOfBoundsException | NullPointerException | NumberFormatException e) {
                 gamePanel.printText("That file is corrupted!");
             }
+
             adventure.start();
-            return true;
+//            return true;
         }
         else if (choice.equals("3") || choice.equals(save3.get(0))){
 //            Adventure adventure = null;
             try {
-                adventure = new Adventure(save3.get(0), (Integer.parseInt(save3.get(1))), (Integer.parseInt(save3.get(2))),
-                        gamePanel);
+                this.adventure = new Adventure(save3.get(0), (Integer.parseInt(save3.get(1))), (Integer.parseInt(save3.get(2)))
+                        );
             } catch (IOException | IndexOutOfBoundsException | NullPointerException | NumberFormatException e) {
+                e.printStackTrace();
                 gamePanel.printText("That file is corrupted!");
             }
+adventure.setPanel(gamePanel);
+            gamePanel.textField.removeActionListener(this);
+            gamePanel.textField.addActionListener(adventure);
             adventure.start();
-            return true;
+//            return true;
         }
-        else {gamePanel.printText("Please enter the number or name of a file!");
-            return false;}
+        else {
+            gamePanel.printText("Please enter the number or name of a file!");
+//            return false;
+        }
     }
 
 

@@ -18,8 +18,8 @@ public class BetterGamePanel extends JPanel implements ActionListener {
 
     public BetterGamePanel() {
         super(new GridBagLayout());
-this.mainMenu = new MainMenu();
-mainMenu.setPanel(this);
+//this.mainMenu = new MainMenu();
+//mainMenu.setPanel(this);
         textHistory = new ArrayList<>();
         for (int i = 0; i <=24 ; i++){
             textHistory.add("");
@@ -75,6 +75,7 @@ mainMenu.setPanel(this);
     }
 
     public void textShift(String text){
+        textArea.setText("");
         String nextText = text;
         String lastText = "";
         Boolean next = true;
@@ -93,6 +94,8 @@ else {
                  next = true;
         }
         }
+        textPrint();
+
     }
 
     public void textPrint(){
@@ -118,6 +121,11 @@ else {
         //Display the window.
         frame.pack();
         frame.setVisible(true);
+    }
+
+    public void close(){
+        this.setVisible(false);
+
     }
 
 

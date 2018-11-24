@@ -17,7 +17,7 @@ public class AdventureTest {
 
     @BeforeEach
     public void initialize() throws IOException {
-        testAdventure = new Adventure("John", 100, 100, new BetterGamePanel());
+        testAdventure = new Adventure("John", 100, 100);
     }
 
     @Test
