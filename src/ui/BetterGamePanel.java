@@ -30,7 +30,7 @@ public class BetterGamePanel extends JPanel implements ActionListener {
         textField = new JTextField(75);
         textField.addActionListener(this);
 
-        textArea = new JTextArea(26, 75);
+        textArea = new JTextArea(27, 76);
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
 

@@ -191,6 +191,7 @@ adventure.setPanel(gamePanel);
         } catch (UnsupportedEncodingException e1) {
             e1.printStackTrace();
         }
+        gamePanel.textField.setText("");
     }
 
 

@@ -1,6 +1,7 @@
 package model;
 
 import ui.Adventure;
+import ui.BetterGamePanel;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
@@ -20,7 +21,7 @@ public class Room {
     public boolean s;
     public boolean e;
     public String trigger;
-
+    private BetterGamePanel gamePanel;
     private Adventure adventure;
 
     public Room(String title, String rundown, Map<String, Item> things, int x, int y, Boolean north, Boolean west,
@@ -40,45 +41,50 @@ public class Room {
         this.goons = new ArrayList<NPC>();
     }
 
+    public void setGamePanel(BetterGamePanel gamePanel){
+        this.gamePanel = gamePanel;
+    }
+
     public void overview() throws FileNotFoundException, UnsupportedEncodingException {
         if (trigger == "none") {
-            System.out.println(this.name);
-            System.out.println(this.description);
+            gamePanel.textShift(this.name);
+            gamePanel.textShift(this.description);
             if (!stuff.isEmpty()) {
-                System.out.println(".");
-                System.out.println("let's see what's lying about...");
-                System.out.println("there's...");
+                gamePanel.textShift(".");
+                gamePanel.textShift("let's see what's lying about...");
+                gamePanel.textShift("there's...");
                 for (String s : stuff.keySet()
                         ) {
                     String description = stuff.get(s).examine();
-                    System.out.println(s + ": " + description);
+                    gamePanel.textShift(s + ": " + description);
 
                 }
             }
 
-            System.out.println("___");
+            gamePanel.textShift("___");
 
             if (pirates.contains(adventure.captain) && adventure.currentPlayer.equals(adventure.firstMate)){
-                System.out.println("Hey! Your captain, " + adventure.captain.pirateName + " is here!");
+                gamePanel.textShift("Hey! Your captain, " + adventure.captain.pirateName + " is here!");
             }
             if (pirates.contains(adventure.firstMate) && adventure.currentPlayer.equals(adventure.captain)){
-                System.out.println("Your loyal first mate, " + adventure.firstMate.pirateName + " is here!");
+                gamePanel.textShift("Your loyal first mate, " + adventure.firstMate.pirateName + " is here!");
 
             }
 
             for (NPC goon: goonTrace
-                 ) {System.out.println(goon.trace);
+                 ) {gamePanel.textShift(goon.trace);
 
             }
 
             for (Mob mob: goons
                     ) if (mob instanceof NPC){
-            {System.out.println(((NPC) mob).description);}
+            {gamePanel.textShift(((NPC) mob).description);}
 
             }
         }
         else if (trigger == "firstMate"){
             trigger = "none";
+            System.out.println("It's crashing at some point during firstMateIntro in adventure");
 adventure.firstMateIntro();
         }
     }
