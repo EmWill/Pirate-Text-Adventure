@@ -33,8 +33,9 @@ public class Adventure extends JFrame implements ActionListener {
 
         captain = new Player(0, startingName,
                 startingX,
-                startingY);
-        firstMate = new Player(0, "Blank", 0, 2);
+                startingY,
+                this);
+        firstMate = new Player(0, "Blank", 0, 2,  this);
 
         Weapon darkness = new Melee("testSword", 1, "gives you a big smack",
                 "a dark and evil sword");
@@ -120,10 +121,10 @@ public class Adventure extends JFrame implements ActionListener {
 
         }
         if (captain.pirateX == -100){
-            System.out.print("Hello " + captain.pirateName);
-            System.out.print("! You are " + captain.drunkenness);
-            gamePanel.textShift(" percent drunk... Wait! That's a terrible name! What's your real name?");
-//            levelOne();
+            gamePanel.textShift("Hello " + captain.pirateName + "! You are " + captain.drunkenness
+                    + " percent drunk...");
+            gamePanel.textShift("Wait! That's a terrible name! What's your real name?");
+            operation = "levelOne";
         }
         else {dungeon.updateRoom(currentPlayer);
             currentPlayer.currentRoom.overview();
@@ -133,10 +134,17 @@ public class Adventure extends JFrame implements ActionListener {
             gamePanel.textShift("(type ? for help)");
     }}
 
-//    public void levelOne() throws FileNotFoundException, UnsupportedEncodingException {
-//        while(!namepicker()){}
-//        while (!firstdrink()) {}
-//        }
+    public void levelOne(String choice) throws FileNotFoundException, UnsupportedEncodingException {
+        namepicker(choice);
+            gamePanel.textShift(currentPlayer.getMobName() + "....");
+            gamePanel.textShift("YOUR SINK IS SHIPPING!");
+            gamePanel.textShift("...and you're just durnk enough to pull this off...");
+            currentPlayer.pirateX = 0;
+            currentPlayer.pirateY = 0;
+            dungeon.updateRoom(currentPlayer);
+            currentPlayer.currentRoom.overview();
+
+    }
 
 
  private boolean namepicker(String choice) throws FileNotFoundException, UnsupportedEncodingException {
@@ -431,11 +439,12 @@ public class Adventure extends JFrame implements ActionListener {
         operation = "use";}
 
         private void useTwo(String choice){
-        if (currentPlayer.currentRoom.itemMatch(choice)){
+        if (currentPlayer.currentRoom.itemMatch(choice)) {
             Item thing = currentPlayer.currentRoom.stuff.get(choice);
             thing.use();
-            operation = "choose";
         }
+        else {gamePanel.textShift("Changed yer mind?");}
+            operation = "choose";
         }
 
 
@@ -477,6 +486,18 @@ public class Adventure extends JFrame implements ActionListener {
             firstMateIntroTwo();
         }
 
+        else if (operation == "levelOne"){
+            if (!(gamePanel.textField.getText() == "")){
+                try {
+                    levelOne(gamePanel.textField.getText());
+                } catch (FileNotFoundException e1) {
+                    e1.printStackTrace();
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+
         gamePanel.textField.setText("");
 
 
@@ -486,14 +507,15 @@ public class Adventure extends JFrame implements ActionListener {
         ActionListener north = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    dungeon.goNorth(currentPlayer);
-                } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
-                } catch (UnsupportedEncodingException e1) {
-                    e1.printStackTrace();
+                if (operation == "choose") {
+                    try {
+                        dungeon.goNorth(currentPlayer);
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                    }
                 }
-
             }
         };
         return north;
@@ -503,14 +525,15 @@ public class Adventure extends JFrame implements ActionListener {
         ActionListener west = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    dungeon.goWest(currentPlayer);
-                } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
-                } catch (UnsupportedEncodingException e1) {
-                    e1.printStackTrace();
+                if (operation == "choose"){
+                    try {
+                        dungeon.goWest(currentPlayer);
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                    }
                 }
-
             }
         };
         return west;
@@ -520,14 +543,15 @@ public class Adventure extends JFrame implements ActionListener {
         ActionListener south = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    dungeon.goSouth(currentPlayer);
-                } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
-                } catch (UnsupportedEncodingException e1) {
-                    e1.printStackTrace();
+                if (operation == "choose") {
+                    try {
+                        dungeon.goSouth(currentPlayer);
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                    }
                 }
-
             }
         };
         return south;
@@ -537,14 +561,15 @@ public class Adventure extends JFrame implements ActionListener {
         ActionListener east = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    dungeon.goEast(currentPlayer);
-                } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
-                } catch (UnsupportedEncodingException e1) {
-                    e1.printStackTrace();
+                if (operation == "choose") {
+                    try {
+                        dungeon.goEast(currentPlayer);
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                    }
                 }
-
             }
         };
         return east;
@@ -552,18 +577,22 @@ public class Adventure extends JFrame implements ActionListener {
 
     private ActionListener getButtonHelp() {
         ActionListener help = new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    help();
-                } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
-                } catch (UnsupportedEncodingException e1) {
-                    e1.printStackTrace();
-                }
 
+                if (operation == "choose") {
+                    try {
+                        help();
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                    }
+                }
             }
         };
+
         return help;
     }
 

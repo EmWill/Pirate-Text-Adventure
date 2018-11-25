@@ -142,9 +142,10 @@ public class Start extends JFrame implements ActionListener {
             } catch (IOException | IndexOutOfBoundsException | NullPointerException | NumberFormatException e) {
                 gamePanel.printText("That file is corrupted!");
             }
-
+            adventure.setPanel(gamePanel);
+            gamePanel.textField.removeActionListener(this);
+            gamePanel.textField.addActionListener(adventure);
             adventure.start();
-
 //            return true;
         }
         else if (choice.equals("2") || choice.equals(save2.get(0))){
@@ -156,7 +157,9 @@ public class Start extends JFrame implements ActionListener {
             } catch (IOException | IndexOutOfBoundsException | NullPointerException | NumberFormatException e) {
                 gamePanel.printText("That file is corrupted!");
             }
-
+            adventure.setPanel(gamePanel);
+            gamePanel.textField.removeActionListener(this);
+            gamePanel.textField.addActionListener(adventure);
             adventure.start();
 //            return true;
         }

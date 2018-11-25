@@ -1,5 +1,7 @@
 package model;
 
+import ui.Adventure;
+
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -7,11 +9,13 @@ import java.util.List;
 
 public class Player extends Mob {
     public int drunkenness;
+    private Adventure adventure;
 
 
-    public Player(int drunk, String name, int x, int y) {
+    public Player(int drunk, String name, int x, int y, Adventure adventure) {
         super(y, x, name);
         drunkenness = drunk;
+        this.adventure = adventure;
 
     }
 
@@ -19,14 +23,14 @@ public class Player extends Mob {
     // EFFECTS: adds or subtracts from pirate's drunkenness and reports change
     public void drink(int amount)
     {if(amount == 0){
-        System.out.println("aye.. not feeling up to it?");
+        adventure.gamePanel.textShift("aye.. not feeling up to it?");
 
     }
     else if (amount < 0)
-    {System.out.println("yer spitting it up!?");
+    {adventure.gamePanel.textShift("yer spitting it up!?");
     }
     drunkenness += amount;
-    System.out.println(pirateName + " ye are " + drunkenness + " percent drunk");
+    adventure.gamePanel.textShift(pirateName + " ye are " + drunkenness + " percent drunk");
     }
     // stub
 
@@ -44,7 +48,7 @@ public class Player extends Mob {
                 if (o.canEquip()){
                 currentWeapon = (Weapon) o;
                 return true;}
-                else System.out.println("Ye can't equip that!");
+                else adventure.gamePanel.textShift("Ye can't equip that!");
             }
 
         }
@@ -62,10 +66,22 @@ public class Player extends Mob {
 
     //EFFECTS: tells captain what weapon they're currently wielding
     public void getEquipment() throws FileNotFoundException, UnsupportedEncodingException {
-        System.out.println("ye be wielding " + currentWeapon.getName());
-        System.out.println(currentWeapon.examine());
+        adventure.gamePanel.textShift("ye be wielding " + currentWeapon.getName());
+        adventure.gamePanel.textShift(currentWeapon.examine());
     }
 
+    // EFFECTS: returns a list of descriptions of items in captain's inventory or informs them that they have nothing.
+    public void getInventory() throws FileNotFoundException, UnsupportedEncodingException {
+        if (inventory.isEmpty()){
+            adventure.gamePanel.textShift("ye haven't any belongings");
+        }
+
+        else {adventure.gamePanel.textShift("_________");
+            adventure.gamePanel.textShift("ye have...");
+            for (Item i :inventory)
+            { adventure.gamePanel.textShift(i.getName() + ": " + i.examine()); }
+        }
+    }
 
     public void setRoom(Room r){
         if (!currentRoom.equals(r)){

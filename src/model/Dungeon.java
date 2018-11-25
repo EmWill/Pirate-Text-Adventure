@@ -140,7 +140,7 @@ public class Dungeon {
             player.goNorth();
             updateRoom(player);
             player.currentRoom.overview();}
-        else{adventure.gamePanel.textShift("Aye! that path be blocked!");}
+        else{adventure.gamePanel.textShift("Aye! That path be blocked!");}
         advanceTime();
     }
 

@@ -1,5 +1,7 @@
 package model;
 
+import ui.Adventure;
+
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -38,17 +40,6 @@ public abstract class Mob {
     // EFFECTS: returns pirate's name
     public String getMobName(){
         return pirateName;
-    }
-
-    // EFFECTS: returns a list of descriptions of items in captain's inventory or informs them that they have nothing.
-    public void getInventory() throws FileNotFoundException, UnsupportedEncodingException {
-        if (inventory.isEmpty()){
-            System.out.println("ye haven't any belongings");
-        }
-        else {System.out.println("ye have...");
-            for (Item i :inventory)
-            { System.out.println(i.getName() + ": " + i.examine()); }
-        }
     }
 
     //EFFECTS: returns remaining ammo of weapon

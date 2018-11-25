@@ -5,6 +5,10 @@ import model.Melee;
 import model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ui.Adventure;
+
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,8 +17,8 @@ public class PlayerTest {
     private Player testPirate;
 
     @BeforeEach
-    public void initialize() {
-        testPirate = new Player(0, "blank", 0, 0);
+    public void initialize() throws IOException {
+        testPirate = new Player(0, "blank", 0, 0, new Adventure("SWAg", 0, 0));
     }
 
     @Test
