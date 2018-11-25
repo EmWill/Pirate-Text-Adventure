@@ -2,14 +2,13 @@ package ui;
 import exceptions.EmptyRoomException;
 import model.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -22,7 +21,8 @@ public class Adventure extends JFrame implements ActionListener {
     public Player firstMate;
     public Player currentPlayer;
     public Dungeon dungeon;
-    private BetterGamePanel gamePanel;
+    public BetterGamePanel gamePanel;
+    private JDialog rattaDialog;
     List<String> file1 = Files.readAllLines(Paths.get("save1.txt"));
     List<String> file2 = Files.readAllLines(Paths.get("save2.txt"));
     List<String> file3 = Files.readAllLines(Paths.get("save3.txt"));
@@ -44,6 +44,15 @@ public class Adventure extends JFrame implements ActionListener {
         captain.inventory.add(darkness);
         currentPlayer = captain;
         this.dungeon = new Dungeon(this);
+        BufferedImage ratta = ImageIO.read(new File("ratta 2 e.png"));
+        ImageIcon icon = new ImageIcon(ratta);
+        JLabel rattaImage = new JLabel(icon);
+        rattaDialog = new JDialog();
+        rattaDialog.add(rattaImage);
+        rattaDialog.setSize(40, 100);
+        Dimension scrn = Toolkit.getDefaultToolkit().getScreenSize();
+        rattaDialog.setLocation(((scrn.width - getWidth()) / 2) + 411, (scrn.height - getHeight()) / 2);
+        rattaDialog.setVisible(false);
         JButton b1 = new JButton();
         JButton b2 = new JButton();
         JButton b3 = new JButton();
@@ -102,6 +111,10 @@ public class Adventure extends JFrame implements ActionListener {
 
 
     public void start() throws FileNotFoundException, UnsupportedEncodingException {
+        gamePanel.textShift("__________________________");
+        if (dungeon.raining){gamePanel.textShift("Aye, it's a rainy day...");}
+        else {gamePanel.textShift("Clear skies...");}
+        gamePanel.textShift("__________________________");
         for (NPC goon: dungeon.goons
              ) {dungeon.updateRoomMob(goon);
 
@@ -336,6 +349,17 @@ public class Adventure extends JFrame implements ActionListener {
         else {gamePanel.textShift("I don't know that guy... Did you spell something wrong?");
             }
 
+
+
+
+    }
+
+    public void ratCheck(){
+        if (currentPlayer.currentRoom.containsByName("Ratta 2E.")){
+            rattaDialog.setVisible(true);
+        }
+        else rattaDialog.setVisible(false);
+        gamePanel.textField.requestFocus();
 
     }
 

@@ -20,7 +20,7 @@ public class Dungeon {
     private ReadWebPageEx reader = new ReadWebPageEx();
     private Parser weatherParser = new Parser();
     private Adventure adventure;
-    private Boolean raining;
+    public Boolean raining;
 
     public Dungeon(Adventure adventure) throws IOException {
         this.adventure = adventure;
@@ -140,7 +140,7 @@ public class Dungeon {
             player.goNorth();
             updateRoom(player);
             player.currentRoom.overview();}
-        else{System.out.println("Aye! that path be blocked!");}
+        else{adventure.gamePanel.textShift("Aye! that path be blocked!");}
         advanceTime();
     }
 
@@ -149,7 +149,7 @@ public class Dungeon {
             player.goSouth();
             updateRoom(player);
             player.currentRoom.overview();}
-        else{System.out.println("Aye! That path be blocked!");}
+        else{adventure.gamePanel.textShift("Aye! That path be blocked!");}
         advanceTime();
     }
 
@@ -158,7 +158,7 @@ public class Dungeon {
             player.goWest();
             updateRoom(player);
             player.currentRoom.overview();}
-        else{System.out.println("Aye! That path be blocked!");}
+        else{adventure.gamePanel.textShift("Aye! That path be blocked!");}
         advanceTime();
     }
 
@@ -167,7 +167,7 @@ public class Dungeon {
             player.goEast();
             updateRoom(player);
             player.currentRoom.overview();}
-        else{System.out.println("Aye! That path be blocked!");}
+        else{adventure.gamePanel.textShift("Aye! That path be blocked!");}
         advanceTime();
     }
 
@@ -268,11 +268,11 @@ public class Dungeon {
         try {
             return weatherParser.parseArray(reader.returnDataWeather());
         } catch (JSONException e) {
-            System.out.println("Uh oh! Something went wrong! Don't worry! You can keep playing, but the weather " +
+            adventure.gamePanel.textShift("Uh oh! Something went wrong! Don't worry! You can keep playing, but the weather " +
                     "functionality is not working.");
             return "Ain't no sunshine";
         } catch (IOException e) {
-            System.out.println("Uh oh! Something went wrong! Don't worry! You can keep playing, but the weather " +
+            adventure.gamePanel.textShift("Uh oh! Something went wrong! Don't worry! You can keep playing, but the weather " +
                     "functionality is not working.");
             return "Ain't no sunshine";
         }

@@ -47,6 +47,7 @@ public class Room {
 
     public void overview() throws FileNotFoundException, UnsupportedEncodingException {
         if (trigger == "none") {
+            gamePanel.textShift("^^^^^^^^^^^^^^^^");
             gamePanel.textShift(this.name);
             gamePanel.textShift(this.description);
             if (!stuff.isEmpty()) {
@@ -84,9 +85,10 @@ public class Room {
         }
         else if (trigger == "firstMate"){
             trigger = "none";
-            System.out.println("It's crashing at some point during firstMateIntro in adventure");
 adventure.firstMateIntro();
         }
+
+        adventure.ratCheck();
     }
 
     public void addObject(Item o){
@@ -140,6 +142,17 @@ adventure.firstMateIntro();
             goonTrace.remove(m);
             m.removePlacesBeen(this);
         }
+    }
+
+    public boolean containsByName(String name){
+        boolean contains = false;
+        for (NPC npc: goons
+             ) {if (npc.getMobName() == name){
+                 contains = true;
+        }
+
+        }
+        return contains;
     }
 
     public boolean itemMatch(String s){
