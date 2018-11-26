@@ -87,6 +87,11 @@ public class Room {
             trigger = "none";
 adventure.firstMateIntro();
         }
+        else if (trigger == "treasureRoom"){
+            trigger = "none";
+            adventure.treasurePanel.setVisible(true);
+            this.overview();
+        }
 
         adventure.ratCheck();
     }

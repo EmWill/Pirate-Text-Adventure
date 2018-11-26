@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 
@@ -14,6 +15,7 @@ public class BetterGamePanel extends JPanel implements ActionListener {
     protected JTextArea textArea;
     private List<String> textHistory;
     private final static String newline = "\n";
+    private final static int screenLength = 122;
     private MainMenu mainMenu;
 
     public BetterGamePanel() {
@@ -75,6 +77,22 @@ public class BetterGamePanel extends JPanel implements ActionListener {
     }
 
     public void textShift(String text){
+        int length = 0;
+        String line = "";
+ArrayList<String> splitText = new ArrayList<>(Arrays.asList( text.split(" ")));
+        for (String word: splitText
+             ) {if ((length += word.length()) >= screenLength){
+                 textPush(line);
+                 line =" " + word;
+                 length = word.length();
+        }
+        else {line = line + " " + word; }
+
+        }
+        textPush(line);
+    }
+
+    private void textPush(String text){
         textArea.setText("");
         String nextText = text;
         String lastText = "";

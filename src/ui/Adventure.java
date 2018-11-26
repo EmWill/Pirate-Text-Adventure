@@ -23,6 +23,7 @@ public class Adventure extends JFrame implements ActionListener {
     public Dungeon dungeon;
     public BetterGamePanel gamePanel;
     private JDialog rattaDialog;
+    public LabelChanger treasurePanel;
     List<String> file1 = Files.readAllLines(Paths.get("save1.txt"));
     List<String> file2 = Files.readAllLines(Paths.get("save2.txt"));
     List<String> file3 = Files.readAllLines(Paths.get("save3.txt"));
@@ -31,7 +32,7 @@ public class Adventure extends JFrame implements ActionListener {
 
     public Adventure(String startingName, int startingX, int startingY) throws IOException {
 
-        captain = new Player(0, startingName,
+        captain = new Player(50, startingName,
                 startingX,
                 startingY,
                 this);
@@ -80,6 +81,9 @@ public class Adventure extends JFrame implements ActionListener {
         b3.addActionListener(getButtonSouth());
         b4.addActionListener(getButtonEast());
         b5.addActionListener(getButtonHelp());
+       treasurePanel = new LabelChanger();
+       treasurePanel.setLocation(800, 700);
+       treasurePanel.setVisible(false);
 
 //        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        this.gamePanel = new BetterGamePanel();
@@ -147,20 +151,17 @@ public class Adventure extends JFrame implements ActionListener {
     }
 
 
- private boolean namepicker(String choice) throws FileNotFoundException, UnsupportedEncodingException {
-        if (choice.equals("fuck")){
-            gamePanel.textShift("That's vulgar! Pick something else!");
-            return false;
+ private void namepicker(String choice) throws FileNotFoundException, UnsupportedEncodingException {
+        if (choice.equals("fuck") || choice.equals("darn")){
+            gamePanel.textShift("That's vulgar! We're gonna keep the default name!");
+
         }
         else
-            if (currentPlayer.equals(captain))
-        {
+
             currentPlayer.pirateName = choice;
-     gamePanel.textShift(currentPlayer.pirateName +" is a much better name! Unfortunately," +
-             " you are a pirate captain whose ship is sinking, and I don't think you're quite drunk enough for the job!" +
-             " How much do you want to drink?");
-       }
-        return true;
+
+
+        operation = "choose";
  }
 //
 //    private boolean firstdrink() throws FileNotFoundException, UnsupportedEncodingException {
@@ -465,6 +466,7 @@ public class Adventure extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        gamePanel.textShift(gamePanel.textField.getText());
         if (operation == "choose") {
             try {
                 choose();
@@ -473,7 +475,7 @@ public class Adventure extends JFrame implements ActionListener {
             } catch (UnsupportedEncodingException e1) {
                 e1.printStackTrace();
             }
-            gamePanel.textShift(gamePanel.textField.getText());
+//            gamePanel.textShift(gamePanel.textField.getText());
         }
         else if (operation == "get"){
             getTwo(gamePanel.textField.getText());

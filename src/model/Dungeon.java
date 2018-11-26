@@ -12,8 +12,9 @@ import java.util.*;
 
 public class Dungeon {
     public Room quarters;
-    public Room longhall;
+    public Room longHall;
     public Room hallEnd;
+    public Room treasureRoom;
     public ArrayList<Room> map;
     public List<NPC> goons;
     private Random rand = new Random();
@@ -56,7 +57,6 @@ public class Dungeon {
         quartersList.put("pirate profiles", profiles);
 
 
-
         quarters = new Room("Captain's Quarters", "You stand in your luxurious quarters. To your north is" +
                 " a long stretch of hallway. You begin to wish you hadn't installed that labyrinth between you and" +
                 " the upper deck.", quartersList, 0, 0,
@@ -66,7 +66,7 @@ public class Dungeon {
                 false,
                 "none");
 
-        longhall = new Room("loooong hallway", "something about this place gives you an itch" +
+        longHall = new Room("loooong hallway", "Something about this place gives you an itch" +
                 " in your back that you can't quite reach. It will take some time to reach the other end of the hall." +
                 " Make sure you're ready.",
                 longhlallList, 0, 1,
@@ -77,7 +77,7 @@ public class Dungeon {
                 "none");
         if (!raining){
         hallEnd = new Room("end of long hallway", "You stand before a large chasm. On the northern side"
-                + " stands a door could lead you one step closer to freedom. You have no way to reach it. Climbing "
+                + " rests a door could lead you one step closer to freedom. You have no way to reach it. Climbing "
                 + "down the chasm, you see a locked door to the west. If only you had a key..."
                 , new HashMap<>(), 0, 2,
                 false,
@@ -85,19 +85,33 @@ public class Dungeon {
                 true ,
                 false,
                 "firstMate");}
-                else {hallEnd = new Room("end of long hallway", "Rain floods the chasm in front of you. "
+                else {hallEnd = new Room("end of long hallway", "As the storm rages on, a gaping hole" +
+                " in the floor stands between you and the way forward." +
+                " Rain floods the chasm in front of you. "
         + "The path is now clear.",
                 new HashMap<>(), 0, 2,
-                false,
+                true,
                 false,
                 true,
                 false,
                 "firstMate"); }
+                treasureRoom = new Room ("the treasure room", "Internet hackers have stolen the answers" +
+                        " to your CPSC 210 final and stored them in this game. They stand in front of you, on a golden" +
+                        " pedestal. Will you be tempted by the secrets" +
+                        " they hold...? Are you truly ready to pass up a guaranteed A?",
+                        new HashMap<>(), 0, 3,
+                        false,
+                        false,
+                        true,
+                        false,
+                        "treasureRoom");
+
         map = new ArrayList<Room>();
         goons = new ArrayList<NPC>();
         addRoom(quarters);
-        addRoom(longhall);
+        addRoom(longHall);
         addRoom(hallEnd);
+        addRoom(treasureRoom);
         goons.add(rat);
     }
 

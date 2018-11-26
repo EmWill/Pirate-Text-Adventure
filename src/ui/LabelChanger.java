@@ -7,30 +7,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class LabelChanger extends JFrame implements ActionListener
 {
-    private JTextField output;
-    private JTextField field;
+    private JLabel label;
+    private JButton btn;
     public LabelChanger()
     {
         super("The title");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new BoxLayout(this, 1));
-        setPreferredSize(new Dimension(900, 700));
+        setPreferredSize(new Dimension(400, 90));
         ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13) );
-        JButton btn = new JButton("Change");
+        setLayout(new FlowLayout());
+        btn = new JButton("Push this button to unlock the treasure");
         btn.setActionCommand("myButton");
         btn.addActionListener(this); //sets "this" class as an action listener for btn.
         //that means that when the btn is clicked,
         //this.actionPerformed(ActionEvent e) will be called.
         //You could also set a different class, if you wanted
         //to capture the response behaviour elsewhere
-        output = new JTextField(5);
-        field = new JTextField(5);
-
-        add(field);
+        label = new JLabel("");
         add(btn);
-        add(output);
+        add(label);
         pack();
-        setLocationRelativeTo(field);
+        setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
     }
@@ -41,8 +37,12 @@ public class LabelChanger extends JFrame implements ActionListener
     {
         if(e.getActionCommand().equals("myButton"))
         {
-            output.setText(field.getText());
+          btn.setText("YOU'RE GOING TO JAIL!!!");
+          label.setText("p.s. good luck on finals");
         }
     }
-
+    public static void main(String[] args)
+    {
+        new LabelChanger();
+    }
 }
