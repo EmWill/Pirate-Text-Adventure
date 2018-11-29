@@ -1,6 +1,8 @@
 package model;
 
-public interface Item {
+import javafx.beans.Observable;
+
+public interface Item extends Observable {
     public String examine(); // returns a description of the object
 
     public boolean obtainable(); // returns true if object can be added to the captain's inventory

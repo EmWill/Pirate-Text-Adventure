@@ -5,12 +5,11 @@ package ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
 
-public class BetterGamePanel extends JPanel implements ActionListener {
+public class BetterGamePanel extends JPanel implements ActionListener, Observer {
     protected JTextField textField;
     protected JTextArea textArea;
     private List<String> textHistory;
@@ -147,4 +146,8 @@ else {
     }
 
 
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }

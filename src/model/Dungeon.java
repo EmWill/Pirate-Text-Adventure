@@ -282,12 +282,12 @@ public class Dungeon {
         try {
             return weatherParser.parseArray(reader.returnDataWeather());
         } catch (JSONException e) {
-            adventure.gamePanel.textShift("Uh oh! Something went wrong! Don't worry! You can keep playing, but the weather " +
-                    "functionality is not working.");
+//            adventure.gamePanel.textShift("Uh oh! Something went wrong! Don't worry! You can keep playing, but the weather " +
+//                    "functionality is not working.");
             return "Ain't no sunshine";
         } catch (IOException e) {
-            adventure.gamePanel.textShift("Uh oh! Something went wrong! Don't worry! You can keep playing, but the weather " +
-                    "functionality is not working.");
+//            adventure.gamePanel.textShift("Uh oh! Something went wrong! Don't worry! You can keep playing, but the weather " +
+//                    "functionality is not working.");
             return "Ain't no sunshine";
         }
     }

@@ -73,7 +73,7 @@ public class Adventure extends JFrame implements ActionListener {
         add(b4);
         add(b5);
         b1.setSize(200,200);
-        centreOnScreen();
+        positionButtons();
         b1.setVisible(true);
       setVisible(true);
       b1.addActionListener(getButtonWest());
@@ -103,11 +103,9 @@ public class Adventure extends JFrame implements ActionListener {
         }
     }
 
-    public void testMethod(){
-        gamePanel.textShift("swag");
-    }
 
-    private void centreOnScreen() {
+
+    private void positionButtons() {
         Dimension scrn = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(((scrn.width - getWidth())- 1026) / 2, (scrn.height - getHeight()) / 2);
     }
@@ -198,6 +196,7 @@ public class Adventure extends JFrame implements ActionListener {
 //    else gamePanel.textShift("HEY! that's not a number!");
 //        return false;}
 
+    // Scripted event, then sets operation to "firstMate", prompting player to pick a name
         public void firstMateIntro() throws FileNotFoundException, UnsupportedEncodingException {
             currentPlayer = firstMate;
             gamePanel.textShift("WOW! This is a long hall.");
@@ -213,6 +212,7 @@ public class Adventure extends JFrame implements ActionListener {
             operation = "firstMate";
         }
 
+        // Continuation of firstMateIntro, after player has selected a name.
         private void firstMateIntroTwo(){
             try {
                 namepicker(gamePanel.textField.getText());
@@ -247,7 +247,10 @@ public class Adventure extends JFrame implements ActionListener {
         gamePanel.textShift("File 1: " + file1.get(0));
         gamePanel.textShift("File 2: " + file2.get(0));
         gamePanel.textShift("File 3: " + file3.get(0));
-        String choice = scanner.nextLine();
+        operation = "save";
+    }
+    private void saveTwo() throws FileNotFoundException, UnsupportedEncodingException{
+        String choice = gamePanel.textField.getText();
         if (choice.equals("1") || choice.equals(file1.get(0)) || choice.equals("File 1") || choice.equals("file 1")) {
             PrintWriter writer = new PrintWriter("save1.txt", "UTF-8");
             writer.println(captain.getMobName());
@@ -274,6 +277,7 @@ public class Adventure extends JFrame implements ActionListener {
         }
         else {gamePanel.textShift("Changed yer mind? Or did ye spell something wrong?"); }
 //        while (!choose());
+        operation = "choose";
 
     }
 
@@ -486,6 +490,16 @@ public class Adventure extends JFrame implements ActionListener {
 
         else if (operation == "firstMate") {
             firstMateIntroTwo();
+        }
+
+        else if (operation == "save"){
+            try {
+                saveTwo();
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+            }
         }
 
         else if (operation == "levelOne"){
