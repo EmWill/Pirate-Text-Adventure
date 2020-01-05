@@ -336,7 +336,7 @@ public class Adventure extends JFrame implements ActionListener {
         else if (choice.equals("e")){dungeon.goEast(currentPlayer); }
         else if (choice.equals("save")){save();}
         else if (choice.equals("look")){
-            System.out.println("chose look");
+          //  System.out.println("chose look");
             currentPlayer.currentRoom.overview(); }
         else if (choice.equals("inventory")){
             currentPlayer.getInventory(); }
@@ -397,9 +397,8 @@ public class Adventure extends JFrame implements ActionListener {
 //        while (!choose());
     }
 
-    // EFFECTS: change's captain's equipped weapon based on captain choice
-    // MODIFIES: captain
-    private void equipSelect() throws FileNotFoundException, UnsupportedEncodingException {
+
+   /* private void equipSelect() throws FileNotFoundException, UnsupportedEncodingException {
         String pick;
         gamePanel.textShift("What from yer inventory do ye want to equip?");
         pick = scanner.nextLine();
@@ -410,6 +409,13 @@ public class Adventure extends JFrame implements ActionListener {
         }
         else if (!currentPlayer.equip(pick)) {gamePanel.textShift("Uh, did ye spell it right?");
         }
+    }
+*/
+   // EFFECTS: change's captain's equipped weapon based on captain choice
+   // MODIFIES: captain
+    private void equipSelect(){
+        gamePanel.textShift("What from yer inventory do ye want to equip?");
+        operation = "equip";
     }
 
     //EFFECTS: lets players choose from a list of available items to obtain
@@ -512,6 +518,10 @@ public class Adventure extends JFrame implements ActionListener {
                     e1.printStackTrace();
                 }
             }
+        }
+        else if (operation == "equip"){
+            currentPlayer.equip(gamePanel.textField.getText());
+            operation = "choose";
         }
 
         gamePanel.textField.setText("");

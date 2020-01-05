@@ -47,11 +47,12 @@ public class Player extends Mob {
             if (pick.equals(o.getName())){
                 if (o.canEquip()){
                 currentWeapon = (Weapon) o;
+                adventure.gamePanel.textShift("Equipped " + pick);
                 return true;}
-                else adventure.gamePanel.textShift("Ye can't equip that!");
             }
 
         }
+        adventure.gamePanel.textShift("Ye can't equip that!");
         return false;
     }
 
